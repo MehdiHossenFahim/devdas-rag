@@ -161,26 +161,53 @@ Vectors are L2-normalised, so FAISS's L2 ranking is identical to cosine-similari
 
 ## 5. RAG pipeline
 
-```
-Bengali Wikisource
-      │  crawler.py     MediaWiki API, polite rate-limiting, on-disk cache
-      ▼
-Chapter HTML (one subpage per chapter)
-      │  preprocess.py  extract prose, NFC, remove noise
-      ▼
-Clean chapter text
-      │  chunker.py     800/150 recursive split on ।  +  metadata
-      ▼
-Chunks + metadata
-      │  embeddings.py  BAAI/bge-m3 (multilingual)
-      ▼
-Vectors ──► FAISS index (vectorstore/)                    ◄── built once by ingest.py
-      ┌────────────────────────── at question time ──────────────────────────┐
-      │ User question → query embedding → FAISS top-k search (LangChain     │
-      │ retriever) → numbered context passages → prompt → gpt-oss-120b      │
-      │ (Groq) → answer with [n] markers → citations built from chunk       │
-      │ metadata (chapter/section/URL)  → shown in Streamlit                │
-      └──────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    SRC["Bengali Wikisource"]
+    SRC -->|"crawler.py · MediaWiki API<br/>Polite rate-limiting · On-disk cache"| HTML["Chapter HTML<br/>(one subpage per chapter)"]
+
+    HTML -->|"preprocess.py · Extract prose<br/>NFC normalization · Remove noise"| CLEAN["Clean chapter text"]
+
+    CLEAN -->|"chunker.py · 800/150 recursive split<br/>on । · Metadata"| CHUNKS["Chunks + metadata"]
+
+    CHUNKS -->|"embeddings.py · BAAI/bge-m3<br/>(multilingual)"| VECTORS["Vectors"]
+
+    VECTORS --> FAISS[("FAISS index<br/>vectorstore/")]
+
+    INGEST["Built once by ingest.py"]
+    INGEST -.-> FAISS
+
+    subgraph QUERY["At question time"]
+        direction TB
+
+        Q["User question"]
+        Q --> EMB["Query embedding"]
+        EMB --> SEARCH["FAISS top-k search<br/>(LangChain retriever)"]
+        SEARCH --> CONTEXT["Numbered context passages"]
+        CONTEXT --> PROMPT["Prompt"]
+        PROMPT --> LLM["gpt-oss-120b<br/>(Groq)"]
+        LLM --> ANSWER["Answer with [n] markers"]
+        ANSWER --> CITE["Citations built from chunk metadata<br/>(chapter / section / URL)"]
+        CITE --> STREAMLIT["Shown in Streamlit"]
+    end
+
+    FAISS -.->|"Retrieval"| SEARCH
+
+    classDef source fill:#1e293b,stroke:#64748b,color:#f8fafc,stroke-width:2px
+    classDef process fill:#172554,stroke:#3b82f6,color:#bfdbfe,stroke-width:2px
+    classDef data fill:#052e16,stroke:#22c55e,color:#bbf7d0,stroke-width:2px
+    classDef index fill:#3b0764,stroke:#a855f7,color:#e9d5ff,stroke-width:2px
+    classDef query fill:#164e63,stroke:#06b6d4,color:#cffafe,stroke-width:2px
+    classDef llm fill:#431407,stroke:#f97316,color:#fed7aa,stroke-width:2px
+    classDef output fill:#3f1d2e,stroke:#ec4899,color:#fbcfe8,stroke-width:2px
+
+    class SRC source
+    class HTML,CLEAN,CHUNKS,VECTORS data
+    class INGEST process
+    class FAISS index
+    class Q,EMB,SEARCH,CONTEXT,PROMPT query
+    class LLM llm
+    class ANSWER,CITE,STREAMLIT output
 ```
 
 The chain is written with LangChain Expression Language in `rag.py`:
