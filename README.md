@@ -1,4 +1,4 @@
-# 📖 দেবদাস (Devdas) — Bengali Literature RAG Chatbot
+# দেবদাস (Devdas) — Bengali Literature RAG Chatbot
 
 A Retrieval-Augmented Generation (RAG) chatbot that lets users ask questions about the Bengali novel **দেবদাস (Devdas)** by Sarat Chandra Chattopadhyay.
 
