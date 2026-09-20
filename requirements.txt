@@ -1,0 +1,17 @@
+# Python 3.10 - 3.12 recommended
+# --- RAG framework -------------------------------------------------------
+langchain-core>=0.3
+langchain-community>=0.3
+langchain-text-splitters>=0.3
+langchain-huggingface>=0.1
+langchain-groq>=0.3
+# --- embeddings (multilingual, Bengali-capable) --------------------------
+sentence-transformers>=3.0     # also installs PyTorch (CPU is fine)
+# --- vector database -----------------------------------------------------
+faiss-cpu>=1.8
+# --- crawling / preprocessing --------------------------------------------
+requests>=2.31
+beautifulsoup4>=4.12
+# --- app / config --------------------------------------------------------
+streamlit>=1.35
+python-dotenv>=1.0
