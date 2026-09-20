@@ -2,6 +2,12 @@
 
 ## Demo Video Link
 
+<p align="center">
+  <a href="https://drive.google.com/file/d/13qp1dw6-GsZ0FwHbNQwcM1KCNz8Nbr2E/view?usp=sharing">
+    <img src="https://img.shields.io/badge/▶%20Watch%20Demo%20Video-Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white" alt="Watch Demo Video on Google Drive">
+  </a>
+</p>
+
 A Retrieval-Augmented-Generation chatbot that answers questions about the Bengali novel
 **দেবদাস** using _only_ the text of the book, cites the chapter/section it used, and says so
 clearly when the answer is not in the book.
@@ -48,7 +54,7 @@ through Calcutta, where he meets the courtesan Chandramukhi, before his tragic e
 
 ```bash
 # 1. clone + enter the project
-git clone <your-repo-url> devdas-rag && cd devdas-rag
+git clone https://github.com/MehdiHossenFahim/devdas-rag && cd devdas-rag
 
 # 2. virtual environment
 python -m venv .venv
