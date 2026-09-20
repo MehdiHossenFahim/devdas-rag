@@ -84,14 +84,6 @@ Notes
   `data/chapters.jsonl`.
 - Quick CLI check without the UI: `python rag.py "চন্দ্রমুখী কে?"`.
 
-**Sanity checks after the first ingest** (recommended before recording the demo)
-
-1. The log should say it discovered all chapter subpages (this novel has about 16 chapters, `প্রথম` … `ষোড়শ পরিচ্ছেদ`) and list a character
-   count for each — no chapter should be `skipped`.
-2. Open `data/chapters.jsonl` / `data/chunks.jsonl` and confirm the text is clean prose (no
-   page-header lines, no `১০০-১১০` page ranges, no leftover navigation text).
-3. `python evaluate.py --locate --write` then review `TEST_QUESTIONS.md` (see §7).
-
 ## 4. Technical details
 
 | Item                | Choice                                                                                                |
@@ -249,7 +241,7 @@ python evaluate.py --retrieval        # hit-rate@1/3/5 of the current index (no 
 python evaluate.py --qa               # run all 10 through the full chatbot -> results/qa_results.md
 ```
 
-## 8. Bonus — comparing approaches (hit rate)
+## 8. Comparing approaches (hit rate)
 
 **What was tested.** Chunking strategies (`400/80`, `800/150`, `1200/200` size/overlap) and
 embedding models (`BAAI/bge-m3` vs `intfloat/multilingual-e5-base`) on the same book.
@@ -280,9 +272,5 @@ why (e.g. smaller chunks are more precise but may split a scene; larger chunks k
 dilute the embedding)._ With only 8 answerable questions each question is worth 12.5 points, so
 add a few more questions to `test_questions.json` for a more stable comparison.
 
-## 9. Limitations
-
-- Each question is answered independently (no multi-turn memory).
-- Retrieval is dense-only (no keyword/BM25 hybrid), so very rare character names occasionally
-  need a rephrased question.
-- Answers are only as good as the Wikisource transcription of the book.
+## Author 
+- Mehedi Hossen Fahim
